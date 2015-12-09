@@ -3,7 +3,7 @@ File Downloads
 
 Hosted Web Apps / Project Westminster Apps running in the Windows 10 app host are unable to use the download manager flows implemented in browsers. Since the UI for file downloads is not availble the website can call the Windows file picker API to save the file.
 
-This site currently demonstrates how to save a jpg image from the server to the users local machine throuhg the file picker api. Next steps will be to support multiple 
+This site currently demonstrates how to save a jpg image from the server to the users local machine throuhg the file picker api. Next steps will be to support multiple file types as well as downloads in the browser.
 
 ### To Run
 * Clone the repo on a Win 10 machine
