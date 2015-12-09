@@ -8,3 +8,5 @@ node_modules
 .publish
 *.swn
 typings
+microsoft.system.package.metadata
+npm-debug.log
