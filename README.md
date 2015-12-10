@@ -10,9 +10,9 @@ This site currently demonstrates how to save a jpg image from the server to the 
 * $npm i
 * $npm run appx
 
-### Created Using: Build system for Windows 10 App Demos
-Check out the [wiki](https://github.com/MicrosoftEdge/generator-appx/wiki) for more information
-
 ### Credits
+
+#### Created Using: Build system for Windows 10 App Demos
+* Check out the [wiki](https://github.com/MicrosoftEdge/generator-appx/wiki) for more information
 * Application icon: [web design by Simple Icons from the Noun Project](https://thenounproject.com/search/?q=code&i=32232)
 * Special thanks to [@phated](https://github.com/phated) for a most thorough code review
