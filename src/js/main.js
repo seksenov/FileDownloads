@@ -2,7 +2,7 @@
   'use strict'
 
 	function download(url) {
-		new Promise(function(resolve, reject) {
+		return new Promise(function(resolve, reject) {
 			if (typeof Windows === 'undefined') {
 				reject(new Error("Windows namespace is undefined. Make sure this is running as a hosted web app with WinRT access through ACURs/Content URIs"));
 				return;
@@ -35,32 +35,39 @@
 		savePicker.fileTypeChoices.insert("JPEG (*.jpg)", [".jpg"]);
 		savePicker.suggestedFileName = "NewPicture";
 
-		return savePicker
-			.pickSaveFileAsync()
-			.then(deferUpdates)
-			.then(function(storageFile) {
-				// Open the returned file in order to copy the data
-				return storageFile.openAsync(Windows.Storage.FileAccessMode.readWrite).then(function(outputStream) {
-					// Copy the stream from the blob to the File stream
-					return Windows.Storage.Streams.RandomAccessStream.copyAsync(inputStream, outputStream).then(function() {
-						new Promise(function(resolve) {
-							outputStream.flushAsync().done(function() {
-								inputStream.close();
-								outputStream.close();
-								resolve(storageFile);
+		var theStorageFile = null;
+
+		return new Promise(function(resolve, reject) {
+			savePicker
+				.pickSaveFileAsync()
+				.then(deferUpdates)
+				.then(function(storageFile) {
+					theStorageFile = storageFile;
+					return new Promise(function(resolve) {
+						// Open the returned file in order to copy the data
+						storageFile.openAsync(Windows.Storage.FileAccessMode.readWrite).then(function(outputStream) {
+							// Copy the stream from the blob to the File stream
+							Windows.Storage.Streams.RandomAccessStream.copyAsync(inputStream, outputStream).then(function() {
+								outputStream.flushAsync().done(function() {
+									inputStream.close();
+									outputStream.close();
+									resolve(storageFile);
+								});
 							});
 						});
+
+						return storageFile;
 					});
+				})
+				.then(completeUpdates)
+				.then(function(status) {
+					if (status === Windows.Storage.Provider.FileUpdateStatus.complete) {
+						resolve(theStorageFile);
+					} else {
+						reject(theStorageFile);
+					}
 				});
-			})
-			.then(completeUpdates)
-			.then(function(status) {
-				if (status === Windows.Storage.Provider.FileUpdateStatus.complete) {
-					resolve(storageFile);
-				} else {
-					reject(storageFile);
-				}
-			});
+		});
 	}
 
 	function deferUpdates(storageFile) {
@@ -70,14 +77,14 @@
 	}
 
 	function completeUpdates(storageFile) {
-		new Promise(function(resolve) {
+		return new Promise(function(resolve) {
 			Windows.Storage.CachedFileManager.completeUpdatesAsync(storageFile).done(resolve);
 		});
 	}
 
 	document.addEventListener("DOMContentLoaded", function() {
 		document.getElementById("saveFile")
-		  .addEventListener("click", () => {
+		  .addEventListener("click", function () {
 				download("./img/detroitSkyline.jpg")
 				  .then(saveBlob)
 					.then(function(file) {
