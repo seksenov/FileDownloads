@@ -1,19 +1,24 @@
-import config from '../config';
-import gulp from 'gulp';
-import webpack from 'webpack';
-import gutil from 'gulp-util';
-import * as path from 'path';
-import eslint from 'gulp-eslint';
+var config = require('../config');
+var gulp = require('gulp');
+var webpack = require('webpack');
+var gutil = require('gulp-util');
+var path = require('path');
+var eslint = require('gulp-eslint');
 
-let lint = () => {
+var lint = function () {
   return gulp.src(path.join(config.webpack.entry.bundle, '../**/*.js'))
   .pipe(eslint())
   .pipe(eslint.format());
 }
 
-let once = fn => {
-  let done = false;
-  return () => done ? void 0 : ((done = true), fn());
+var once = function (fn) {
+  var done = false;
+  return function() {
+    if (!done) {
+      done = true;
+      fn();
+    }
+  };
 }
 
 function checkErrors(err, stats) {
@@ -28,16 +33,16 @@ function checkErrors(err, stats) {
 
 gulp.task('webpack:lint', lint);
 
-gulp.task('webpack', ['webpack:lint'], done => {
-  let oncedone = once(done);
+gulp.task('webpack', ['webpack:lint'], function(done) {
+  var oncedone = once(done);
   if (config.watch) {
-    webpack(config.webpack).watch(200, (err, stats) => {
+    webpack(config.webpack).watch(200, function(err, stats) {
       checkErrors(err, stats);
       gutil.log(gutil.colors.cyan('webpack'), 'task watching files...');
       oncedone();
     });
   } else {
-    webpack(config.webpack, (err, stats) => {
+    webpack(config.webpack, function(err, stats) {
       checkErrors(err, stats);
       oncedone();
     });

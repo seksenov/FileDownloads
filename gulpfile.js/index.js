@@ -10,10 +10,10 @@
   gulp/tasks/default.js specifies the default set of tasks to run
   when you run `gulp`.
 */
-import gulp from 'gulp';
-import gulpsequence from 'gulp-sequence';
-import requireDir from 'require-dir';
-import config from './config';
+var gulp = require('gulp');
+var gulpsequence = require('gulp-sequence');
+var requireDir = require('require-dir');
+var config = require('./config');
 
 // Require all tasks in gulp/tasks, including subfolders
 requireDir('./tasks', { recurse: true });

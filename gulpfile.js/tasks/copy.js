@@ -1,19 +1,18 @@
-import config from '../config';
-import gulp from 'gulp';
-import gulpif from 'gulp-if';
-import lazypipe from 'lazypipe';
-import * as path from 'path';
-import gutil from 'gulp-util';
-import useref from 'gulp-useref';
-import babel from 'gulp-babel';
-import changed from 'gulp-changed';
-import watch from 'gulp-watch';
-import sass from 'gulp-sass';
-import sourcemaps from 'gulp-sourcemaps';
-import autoprefixer from 'gulp-autoprefixer';
-import eslint from 'gulp-eslint';
+var config = require('../config');
+var gulp = require('gulp');
+var gulpif = require('gulp-if');
+var lazypipe = require('lazypipe');
+var path = require('path');
+var gutil = require('gulp-util');
+var useref = require('gulp-useref');
+var changed = require('gulp-changed');
+var watch = require('gulp-watch');
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
+var autoprefixer = require('gulp-autoprefixer');
+var eslint = require('gulp-eslint');
 
-gulp.task('copy', done => {
+gulp.task('copy', function(done) {
   const srcFiles = [
     path.join(config.src, '**/**'),
     '!' + path.join(config.src, 'bundles/**'),
@@ -24,7 +23,6 @@ gulp.task('copy', done => {
   const doJS = lazypipe()
     .pipe(eslint)
     .pipe(eslint.format)
-    .pipe(babel);
 
   const doScss = lazypipe()
     .pipe(sourcemaps.init)

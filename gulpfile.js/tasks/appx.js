@@ -1,9 +1,9 @@
-import gulp from 'gulp';
-import config from '../config';
-import * as path from 'path';
-import * as os from 'os';
+var gulp = require('gulp');
+var config = require('../config');
+var path = require('path');
+var os = require('os');
 
-let hwa = null;
+var hwa = null;
 if (os.platform() === 'win32') {
   try {
     hwa = require('hwa');
@@ -12,7 +12,7 @@ if (os.platform() === 'win32') {
   }
 }
 
-gulp.task('appx', done => {
+gulp.task('appx', function(done) {
   if (hwa) {
     hwa.registerApp(path.resolve(config.appx.src));
   } else {

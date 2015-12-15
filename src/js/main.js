@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
 	var btn = document.getElementById("saveFile");
-	btn.addEventListener("click", () => downloadAndSave("./img/detroitSkyline.jpg"));
+	btn.addEventListener("click", function() {downloadAndSave("./img/detroitSkyline.jpg")});
 }
 
 function downloadAndSave(url) {

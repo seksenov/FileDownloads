@@ -1,10 +1,10 @@
-import {argv as args} from 'yargs';
+var args = require('yargs');
 const dest = './dist';
 const src = './src';
 const port = 3000;
 const shouldWatch = args.watch;
 
-export default {
+module.exports = {
   watch: shouldWatch,
   src: src,
   dest: dest,
@@ -15,17 +15,6 @@ export default {
     output: {
       filename: '[name].js',
       path: dest + '/bundles'
-    },
-    module: {
-      loaders: [{
-        test: /\.js$/,
-        exclude: [
-          /node_modules/
-        ],
-        loaders: [
-          'babel-loader'
-        ]
-      }]
     }
   },
   browserSync: {
